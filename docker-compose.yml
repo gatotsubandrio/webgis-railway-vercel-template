@@ -1,0 +1,42 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgis/postgis:15-3.4
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-webgis}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-webgis}
+      POSTGRES_DB: ${POSTGRES_DB:-webgis}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./migrations:/docker-entrypoint-initdb.d
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pgadmin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "8081:80"
+    depends_on:
+      - postgres
+
+  server:
+    build: ./server
+    env_file: .env.example
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+
+  client:
+    build: ./client
+    env_file: .env.example
+    ports:
+      - "3000:3000"
+    depends_on:
+      - server
+
+volumes:
+  pgdata:
