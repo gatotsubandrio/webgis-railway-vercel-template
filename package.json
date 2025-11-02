@@ -4,9 +4,10 @@
   "description": "Template includes: - React frontend (client/) with Leaflet demo (marker, popup, show coords) - Node.js backend (server/) with Express + PostgreSQL (PostGIS-ready) - CodeIgniter placeholder (api/) - Dockerfiles for client & server - docker-compose.yml for local development (postgres + pgadmin + server + client) - migrations/ for SQL (create locations table with PostGIS) - GitHub workflows examples (in .github/workflows)",
   "main": "index.js",
   "scripts": {
-     "dev:frontend": "cd frontend && npm run dev",
-    "dev:backend": "cd backend && flask run",
-    "dev:all": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",    
+    "dev:backend": "cd backend && npm run dev",
+     "dev:client": "cd client && npm run dev",
+    "dev:server": "cd server && flask run",
+    "dev:all": "concurrently \"npm run dev:backend\" \"npm run dev:client\" \"npm run dev:server\"",    
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
